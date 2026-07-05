@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  profile    Profile?
+  workoutLogs WorkoutLog[]
+  foodLogs    FoodLog[]
+}
+
+model Profile {
+  id        String @id @default(cuid())
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  age             Int
+  sex             String // "male" | "female"
+  heightCm        Float
+  weightKg        Float
+  goal            String // "lose_fat" | "gain_muscle" | "cut" | "bulk" | "recomp" | "maintain"
+  activityLevel   String // "sedentary" | "light" | "moderate" | "active" | "very_active"
+  daysPerWeek     Int
+  otherExercise   String? // free text: what else they do (running, sports, etc.)
+
+  calorieTarget   Int
+  proteinTarget   Int
+  carbTarget      Int
+  fatTarget       Int
+
+  splitJson       String // JSON string: the generated workout split (array of days)
+
+  updatedAt       DateTime @updatedAt
+}
+
+model WorkoutLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      String   // "YYYY-MM-DD"
+  dayName   String   // e.g. "Push Day"
+  itemsJson String   // JSON string: [{ id, name, sets, reps, checked }]
+
+  @@unique([userId, date])
+}
+
+model FoodLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      String   // "YYYY-MM-DD"
+  name      String
+  calories  Int
+  protein   Int
+  carbs     Int
+  fat       Int
+  source    String   // "photo" | "manual"
+  createdAt DateTime @default(now())
+}
