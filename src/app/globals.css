@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-ink text-chalk;
+  }
+  body {
+    @apply font-body antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-display uppercase tracking-wide;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-widest2 text-smoke;
+  }
+
+  .btn-primary {
+    @apply bg-iron text-ink font-display uppercase tracking-wide py-3 px-6 rounded-sm transition-colors hover:bg-[#f16a3c] active:translate-y-px disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  .btn-secondary {
+    @apply border border-line text-chalk font-display uppercase tracking-wide py-3 px-6 rounded-sm transition-colors hover:border-smoke disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  .input-field {
+    @apply w-full bg-panel2 border border-line rounded-sm px-4 py-3 text-chalk placeholder:text-smoke/60 focus:outline-none focus:border-iron transition-colors;
+  }
+
+  .card {
+    @apply bg-panel border border-line rounded-sm;
+  }
+
+  /* Plate-stack progress: a signature element evoking a loaded barbell.
+     Each segment is a "plate" that lights up as completion increases. */
+  .plate-stack {
+    @apply flex gap-1 w-full;
+  }
+  .plate-stack .plate {
+    @apply h-3 flex-1 rounded-[2px] bg-panel2 border border-line transition-colors duration-300;
+  }
+  .plate-stack .plate.filled {
+    @apply bg-iron border-iron;
+  }
+}
